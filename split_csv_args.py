@@ -2,6 +2,7 @@ import csv
 import os
 import argparse
 import re
+from operator import itemgetter
 
 parser = argparse.ArgumentParser(description="Splits an Excel file into CSVs")
 parser.add_argument('-c','--columns', type=int, nargs='+', help="Columns to be used as criteria for splitting file. First column = 0", required=True)
@@ -34,8 +35,13 @@ def split_file_by_conf_key(disputes):
     header = disputes[0]
     dispute_records = disputes[1:]
     special_cases = {}
-    for row in dispute_records:
-        
+    # Let's start by sorting the file    
+    dispute_records = sorted(dispute_records, key=itemgetter(*args.columns))
+    ######### debugging code #########
+    #for row in dispute_records:
+    #    print row
+    ######### /debugging code #########
+    for row in dispute_records:        
         if args.exclude <> None:
             if args.excludeVal == None and row[args.exclude] <> '':
                 continue
