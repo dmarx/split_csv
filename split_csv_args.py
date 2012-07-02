@@ -17,8 +17,14 @@ args=parser.parse_args()
 master_file = args.file
 subdir= args.subdir
 
-print args.file
-print args.columns
+# if subdir doesn't exist, create it
+try:
+    testFile=os.path.join(subdir, 'TestFile.txt')
+    f=open(testFile, 'w')
+    f.close()
+    os.remove(testFile)
+except IOError:
+    os.mkdir(subdir)
 
 with open(master_file, 'r') as f:
     reader = csv.reader(f, dialect='excel')
